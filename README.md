@@ -224,3 +224,4 @@ Ce projet est un logiciel propriétaire développé pour NexusBi.
 
 **Développé avec ❤️ par l'équipe NexusBi**# NexusBi
 # NexusBI
+# NexusBi
