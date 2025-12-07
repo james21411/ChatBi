@@ -4,14 +4,15 @@ import { DataCleaningView } from './components/DataCleaningView';
 import { ReportsView } from './components/ReportsView';
 import { DataSourcesView } from './components/DataSourcesView';
 import { AnalyticsView } from './components/AnalyticsView';
+import { SettingsView } from './components/SettingsView';
 import { SqlImportModal } from './components/SqlImportModal';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'cleaning' | 'reports' | 'sources' | 'analytics'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'cleaning' | 'reports' | 'sources' | 'analytics' | 'settings'>('dashboard');
   const [showImportModal, setShowImportModal] = useState(false);
 
   const handleViewChange = (view: string) => {
-    setCurrentView(view as 'dashboard' | 'cleaning' | 'reports' | 'sources' | 'analytics');
+    setCurrentView(view as 'dashboard' | 'cleaning' | 'reports' | 'sources' | 'analytics' | 'settings');
   };
 
   return (
@@ -46,7 +47,14 @@ export default function App() {
         />
       )}
       {currentView === 'cleaning' && (
-        <DataCleaningView 
+        <DataCleaningView
+          currentView={currentView}
+          onViewChange={handleViewChange}
+          onShowImportModal={() => setShowImportModal(true)}
+        />
+      )}
+      {currentView === 'settings' && (
+        <SettingsView
           currentView={currentView}
           onViewChange={handleViewChange}
           onShowImportModal={() => setShowImportModal(true)}

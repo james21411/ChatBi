@@ -107,6 +107,7 @@ const menuItems: MenuItem[] = [
       { label: 'Communauté' },
       { label: 'Signaler un bug' },
       { label: '', separator: true },
+      { label: 'Paramètres', shortcut: 'Ctrl+,' },
       { label: 'À propos de NexusBi' },
     ],
   },
@@ -128,46 +129,53 @@ export function TopMenuBar({ currentView = 'dashboard', onViewChange, onShowImpo
   }, []);
 
   return (
-    <div className="bg-[#0056D2] flex flex-col">
+    <header className="bg-blue-900 flex flex-col" style={{backgroundColor: '#1e3a8a'}}>
       {/* Ligne du haut - Menus principaux */}
-      <div className="text-white h-9 flex items-center px-4 relative z-50" ref={menuRef}>
+      <nav className="text-white h-12 flex items-center px-5 relative z-50" style={{color: 'white', minHeight: '48px'}} ref={menuRef}>
         {/* Logo et nom */}
-        <div className="flex items-center gap-3 mr-6">
-          <div className="w-6 h-6 bg-white rounded flex items-center justify-center">
-            <span className="text-[#0056D2]">N</span>
+        <figure className="flex items-center gap-3 mr-6">
+          <div className="w-8 h-8 bg-[var(--primary-foreground)] rounded flex items-center justify-center">
+            <span className="text-[var(--primary)] font-medium text-lg">N</span>
           </div>
-          <span className="text-white">NexusBi</span>
-        </div>
+          <span className="text-white text-lg font-medium">NexusBi</span>
+        </figure>
 
         {/* Menus */}
-        <div className="flex items-center gap-1">
+        <menu className="flex items-center gap-2">
           {menuItems.map((menu) => (
             <div key={menu.label} className="relative">
               <button
-                className={`px-3 py-1 rounded hover:bg-white/10 transition-colors flex items-center gap-1 ${
-                  activeMenu === menu.label ? 'bg-white/20' : ''
+                className={`px-5 py-2 rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 text-base whitespace-nowrap ${
+                  activeMenu === menu.label ? 'bg-blue-700 text-white' : 'text-white'
                 }`}
+                style={{minHeight: '40px', minWidth: '140px'}}
                 onClick={() => setActiveMenu(activeMenu === menu.label ? null : menu.label)}
               >
                 {menu.label}
-                <ChevronDown size={14} />
+                <ChevronDown size={12} />
               </button>
 
               {/* Dropdown */}
               {activeMenu === menu.label && (
-                <div className="absolute top-full left-0 mt-1 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 min-w-[240px] py-1 z-50">
+                <div className="absolute top-full left-0 mt-1 bg-blue-950 text-white shadow-xl border border-blue-800 min-w-[360px] py-2 z-50" style={{backgroundColor: '#172554', color: 'white', borderColor: '#1e3a8a'}}>
                   {menu.items.map((item, index) => (
                     item.separator ? (
-                      <div key={index} className="h-px bg-gray-200 my-1" />
+                      <div key={index} className="h-px bg-blue-600 my-1" />
                     ) : (
                       <button
                         key={index}
-                        className="w-full px-4 py-2 hover:bg-gray-100 flex items-center justify-between transition-colors text-left"
-                        onClick={() => setActiveMenu(null)}
+                        className="w-full px-5 py-3 hover:bg-blue-900 flex items-center justify-between transition-colors text-left text-base whitespace-nowrap"
+                        style={{color: 'white', minHeight: '44px'}}
+                        onClick={() => {
+                          setActiveMenu(null);
+                          if (item.label === 'Paramètres') {
+                            onViewChange?.('settings');
+                          }
+                        }}
                       >
                         <span>{item.label}</span>
                         {item.shortcut && (
-                          <span className="text-gray-500 ml-8">{item.shortcut}</span>
+                          <span className="text-blue-300 ml-6 text-xs">{item.shortcut}</span>
                         )}
                       </button>
                     )
@@ -176,84 +184,101 @@ export function TopMenuBar({ currentView = 'dashboard', onViewChange, onShowImpo
               )}
             </div>
           ))}
-        </div>
+        </menu>
 
         {/* Zone droite - Info utilisateur */}
-        <div className="ml-auto flex items-center gap-4">
-          <div className="text-white/80 flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+        <aside className="ml-auto flex items-center gap-4">
+          <div className="text-blue-300 flex items-center gap-3 text-lg">
+            <div className="w-4 h-4 bg-green-400 rounded-full"></div>
             <span>En ligne</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-[var(--secondary)] rounded-full flex items-center justify-center text-lg font-medium">
               <span>JD</span>
             </div>
-            <span>Jean Dupont</span>
+            <span className="text-white text-lg">Jean Dupont</span>
           </div>
-        </div>
-      </div>
+        </aside>
+      </nav>
 
       {/* Ligne du bas - Navigation des vues */}
-      <div className="bg-[#0046b2] px-4 py-2 flex items-center gap-2">
+      <nav className="bg-blue-950 px-5 py-3 flex items-center gap-4" style={{backgroundColor: '#172554', minHeight: '56px'}}>
         <button
           onClick={() => onViewChange?.('dashboard')}
-          className={`px-4 py-1.5 rounded transition-colors ${
-            currentView === 'dashboard' 
-              ? 'bg-white text-[#0056D2]' 
-              : 'text-white hover:bg-white/10'
+          className={`px-5 py-3 rounded-lg transition-colors text-base ${
+            currentView === 'dashboard'
+              ? 'bg-blue-800 text-white'
+              : 'text-white hover:bg-blue-700'
           }`}
+          style={{minHeight: '44px'}}
         >
           Tableau de Bord
         </button>
         <button
           onClick={() => onViewChange?.('sources')}
-          className={`px-4 py-1.5 rounded transition-colors ${
-            currentView === 'sources' 
-              ? 'bg-white text-[#0056D2]' 
-              : 'text-white hover:bg-white/10'
+          className={`px-5 py-3 rounded-lg transition-colors text-base ${
+            currentView === 'sources'
+              ? 'bg-blue-800 text-white'
+              : 'text-white hover:bg-blue-700'
           }`}
+          style={{minHeight: '44px'}}
         >
           Sources de Données
         </button>
         <button
           onClick={() => onViewChange?.('analytics')}
-          className={`px-4 py-1.5 rounded transition-colors ${
-            currentView === 'analytics' 
-              ? 'bg-white text-[#0056D2]' 
-              : 'text-white hover:bg-white/10'
+          className={`px-5 py-3 rounded-lg transition-colors text-base ${
+            currentView === 'analytics'
+              ? 'bg-blue-800 text-white'
+              : 'text-white hover:bg-blue-700'
           }`}
+          style={{minHeight: '44px'}}
         >
           Analyses
         </button>
         <button
           onClick={() => onViewChange?.('reports')}
-          className={`px-4 py-1.5 rounded transition-colors ${
-            currentView === 'reports' 
-              ? 'bg-white text-[#0056D2]' 
-              : 'text-white hover:bg-white/10'
+          className={`px-5 py-3 rounded-lg transition-colors text-base ${
+            currentView === 'reports'
+              ? 'bg-blue-800 text-white'
+              : 'text-white hover:bg-blue-700'
           }`}
+          style={{minHeight: '44px'}}
         >
           Rapports
         </button>
         <button
           onClick={() => onViewChange?.('cleaning')}
-          className={`px-4 py-1.5 rounded transition-colors ${
-            currentView === 'cleaning' 
-              ? 'bg-white text-[#0056D2]' 
-              : 'text-white hover:bg-white/10'
+          className={`px-5 py-3 rounded-lg transition-colors text-base ${
+            currentView === 'cleaning'
+              ? 'bg-blue-800 text-white'
+              : 'text-white hover:bg-blue-700'
           }`}
+          style={{minHeight: '44px'}}
         >
           Nettoyage
+        </button>
+        <button
+          onClick={() => onViewChange?.('settings')}
+          className={`px-5 py-3 rounded-lg transition-colors text-base ${
+            currentView === 'settings'
+              ? 'bg-blue-800 text-white'
+              : 'text-white hover:bg-blue-700'
+          }`}
+          style={{minHeight: '44px'}}
+        >
+          Paramètres
         </button>
         <div className="ml-auto">
           <button
             onClick={() => onShowImportModal?.()}
-            className="px-4 py-1.5 rounded bg-[#FF6B00] text-white hover:bg-[#e56100] transition-colors"
+            className="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors text-base font-medium"
+            style={{minHeight: '44px'}}
           >
             Import SQL
           </button>
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 }

@@ -84,15 +84,15 @@
     --color-gray-900: oklch(.21 .034 264.665);
     --color-black: #000;
     --color-white: #fff;
-    --spacing: .25rem;
-    --text-xs: .75rem;
-    --text-xs--line-height: calc(1 / .75);
-    --text-sm: .875rem;
-    --text-sm--line-height: calc(1.25 / .875);
-    --text-base: 1rem;
-    --text-lg: 1.125rem;
-    --text-xl: 1.25rem;
-    --text-2xl: 1.5rem;
+    --spacing: .2rem;
+    --text-xs: .65rem;
+    --text-xs--line-height: calc(1 / .65);
+    --text-sm: .75rem;
+    --text-sm--line-height: calc(1.25 / .75);
+    --text-base: .875rem;
+    --text-lg: 1rem;
+    --text-xl: 1.125rem;
+    --text-2xl: 1.25rem;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --blur-sm: 8px;
@@ -1467,7 +1467,7 @@
 }
 
 html {
-  font-size: var(--font-size);
+  font-size: 14px;
 }
 
 @property --tw-translate-x {

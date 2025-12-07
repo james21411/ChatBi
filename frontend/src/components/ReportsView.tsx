@@ -27,93 +27,93 @@ export function ReportsView({ currentView, onViewChange, onShowImportModal }: Re
       />
       
       <div className="flex flex-1 overflow-hidden bg-gray-50">
-        <Sidebar activeView="reports" />
+        <Sidebar activeView="reports" onNavigate={onViewChange} />
         
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* En-tête */}
-          <div className="bg-white border-b border-gray-200 px-8 py-6">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-gray-800">Rapports</h1>
-              <button className="px-4 py-2 bg-[#0056D2] text-white rounded-lg hover:bg-[#0046b2] transition-colors">
+          <div className="bg-white border-b border-gray-200 px-4 py-3">
+            <div className="flex items-center justify-between mb-1">
+              <h1 className="text-gray-800 text-lg">Rapports</h1>
+              <button className="px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors text-sm">
                 Nouveau rapport
               </button>
             </div>
-            <p className="text-gray-600">Gérez et partagez vos rapports d'analyse</p>
+            <p className="text-gray-600 text-sm">Gérez et partagez vos rapports d'analyse</p>
           </div>
 
           {/* Filtres */}
-          <div className="bg-white border-b border-gray-200 px-8 py-4 flex items-center gap-4">
-            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0056D2]">
+          <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center gap-3">
+            <select className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#0056D2] text-sm">
               <option>Tous les types</option>
               <option>PDF</option>
               <option>Excel</option>
               <option>PowerPoint</option>
             </select>
-            
-            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0056D2]">
+
+            <select className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#0056D2] text-sm">
               <option>Tous les statuts</option>
               <option>Publié</option>
               <option>Brouillon</option>
               <option>Archivé</option>
             </select>
-            
-            <div className="flex items-center gap-2 ml-auto">
-              <Calendar size={18} className="text-gray-500" />
+
+            <div className="flex items-center gap-1.5 ml-auto">
+              <Calendar size={14} className="text-gray-500" />
               <input
                 type="date"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0056D2]"
+                className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#0056D2] text-sm"
               />
             </div>
           </div>
 
           {/* Liste des rapports */}
-          <div className="flex-1 overflow-auto p-8">
-            <div className="grid grid-cols-1 gap-4">
+          <div className="flex-1 overflow-auto p-4">
+            <div className="grid grid-cols-1 gap-3">
               {reports.map((report) => (
                 <div
                   key={report.id}
-                  className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow"
+                  className="bg-white border border-gray-200 rounded p-4 hover:shadow transition-shadow"
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4 flex-1">
-                      <div className="w-12 h-12 bg-[#0056D2] rounded-lg flex items-center justify-center flex-shrink-0">
-                        <FileText size={24} className="text-white" />
+                    <div className="flex items-start gap-3 flex-1">
+                      <div className="w-10 h-10 bg-[#0056D2] rounded flex items-center justify-center flex-shrink-0">
+                        <FileText size={20} className="text-white" />
                       </div>
-                      
+
                       <div className="flex-1">
-                        <h3 className="text-gray-800 mb-1">{report.name}</h3>
-                        <div className="flex items-center gap-4 text-gray-600">
+                        <h3 className="text-gray-800 text-sm mb-0.5">{report.name}</h3>
+                        <div className="flex items-center gap-3 text-gray-600 text-xs">
                           <span>{report.type}</span>
                           <span>•</span>
                           <span>{report.date}</span>
                           <span>•</span>
                           <div className="flex items-center gap-1">
-                            <Eye size={16} />
+                            <Eye size={12} />
                             <span>{report.views} vues</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className={`px-3 py-1 rounded-full text-white ${
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-0.5 rounded-full text-white text-xs ${
                         report.status === 'Publié' ? 'bg-[#0056D2]' :
                         report.status === 'Brouillon' ? 'bg-[#FF6B00]' :
                         'bg-gray-400'
                       }`}>
                         {report.status}
                       </span>
-                      
-                      <button className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                        <Download size={18} />
+
+                      <button className="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded transition-colors">
+                        <Download size={14} />
                       </button>
-                      
-                      <button className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                        <Share2 size={18} />
+
+                      <button className="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded transition-colors">
+                        <Share2 size={14} />
                       </button>
-                      
-                      <button className="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
-                        <MoreVertical size={18} />
+
+                      <button className="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded transition-colors">
+                        <MoreVertical size={14} />
                       </button>
                     </div>
                   </div>

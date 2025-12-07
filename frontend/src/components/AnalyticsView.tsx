@@ -41,126 +41,126 @@ export function AnalyticsView({ currentView, onViewChange, onShowImportModal }: 
       />
       
       <div className="flex flex-1 overflow-hidden bg-gray-50">
-        <Sidebar activeView="analytics" />
+        <Sidebar activeView="analytics" onNavigate={onViewChange} />
         
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* En-tête */}
-          <div className="bg-white border-b border-gray-200 px-8 py-6">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-gray-800">Analyses Avancées</h1>
-              <div className="flex gap-3">
-                <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0056D2]">
+          <div className="bg-white border-b border-gray-200 px-4 py-3">
+            <div className="flex items-center justify-between mb-1">
+              <h1 className="text-gray-800 text-lg">Analyses Avancées</h1>
+              <div className="flex gap-2">
+                <select className="px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#0056D2] text-sm">
                   <option>Derniers 30 jours</option>
                   <option>Derniers 90 jours</option>
                   <option>Cette année</option>
                   <option>Année dernière</option>
                 </select>
-                <button className="px-4 py-2 bg-[#0056D2] text-white rounded-lg hover:bg-[#0046b2] transition-colors">
+                <button className="px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors text-sm">
                   Exporter l'analyse
                 </button>
               </div>
             </div>
-            <p className="text-gray-600">Analyses détaillées de vos performances</p>
+            <p className="text-gray-600 text-sm">Analyses détaillées de vos performances</p>
           </div>
 
           {/* Métriques principales */}
-          <div className="bg-white border-b border-gray-200 px-8 py-6">
-            <div className="grid grid-cols-4 gap-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 border border-blue-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#0056D2] rounded-lg flex items-center justify-center">
-                    <DollarSign size={20} className="text-white" />
+          <div className="bg-white border-b border-gray-200 px-4 py-3">
+            <div className="grid grid-cols-4 gap-4">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded p-3 border border-blue-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-8 h-8 bg-[#0056D2] rounded flex items-center justify-center">
+                    <DollarSign size={16} className="text-white" />
                   </div>
-                  <div className="flex items-center gap-1 text-green-600">
-                    <TrendingUp size={16} />
+                  <div className="flex items-center gap-1 text-green-600 text-xs">
+                    <TrendingUp size={12} />
                     <span>+12.5%</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-1">Revenus Totaux</p>
-                <p className="text-gray-800">148 500 €</p>
+                <p className="text-gray-600 mb-0.5 text-xs">Revenus Totaux</p>
+                <p className="text-gray-800 text-sm">148 500 €</p>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-5 border border-orange-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#FF6B00] rounded-lg flex items-center justify-center">
-                    <Activity size={20} className="text-white" />
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded p-3 border border-orange-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-8 h-8 bg-[#FF6B00] rounded flex items-center justify-center">
+                    <Activity size={16} className="text-white" />
                   </div>
-                  <div className="flex items-center gap-1 text-green-600">
-                    <TrendingUp size={16} />
+                  <div className="flex items-center gap-1 text-green-600 text-xs">
+                    <TrendingUp size={12} />
                     <span>+8.3%</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-1">Taux de Conversion</p>
-                <p className="text-gray-800">68.5%</p>
+                <p className="text-gray-600 mb-0.5 text-xs">Taux de Conversion</p>
+                <p className="text-gray-800 text-sm">68.5%</p>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-5 border border-purple-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                    <TrendingUp size={20} className="text-white" />
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded p-3 border border-purple-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-8 h-8 bg-purple-500 rounded flex items-center justify-center">
+                    <TrendingUp size={16} className="text-white" />
                   </div>
-                  <div className="flex items-center gap-1 text-green-600">
-                    <TrendingUp size={16} />
+                  <div className="flex items-center gap-1 text-green-600 text-xs">
+                    <TrendingUp size={12} />
                     <span>+15.7%</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-1">Croissance</p>
-                <p className="text-gray-800">+23.4%</p>
+                <p className="text-gray-600 mb-0.5 text-xs">Croissance</p>
+                <p className="text-gray-800 text-sm">+23.4%</p>
               </div>
 
-              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-5 border border-red-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
-                    <TrendingDown size={20} className="text-white" />
+              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded p-3 border border-red-200">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-8 h-8 bg-red-500 rounded flex items-center justify-center">
+                    <TrendingDown size={16} className="text-white" />
                   </div>
-                  <div className="flex items-center gap-1 text-red-600">
-                    <TrendingDown size={16} />
+                  <div className="flex items-center gap-1 text-red-600 text-xs">
+                    <TrendingDown size={12} />
                     <span>-3.2%</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-1">Taux d'Abandon</p>
-                <p className="text-gray-800">12.8%</p>
+                <p className="text-gray-600 mb-0.5 text-xs">Taux d'Abandon</p>
+                <p className="text-gray-800 text-sm">12.8%</p>
               </div>
             </div>
           </div>
 
           {/* Graphiques */}
-          <div className="flex-1 overflow-auto p-8">
-            <div className="grid grid-cols-1 gap-6 mb-6">
+          <div className="flex-1 overflow-auto p-4">
+            <div className="grid grid-cols-1 gap-4 mb-4">
               {/* Graphique de ventes */}
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-6">
+              <div className="bg-white rounded border border-gray-200 p-4">
+                <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-gray-800 mb-1">Analyse des Ventes vs Prévisions</h3>
-                    <p className="text-gray-600">Comparaison avec les objectifs</p>
+                    <h3 className="text-gray-800 text-sm mb-0.5">Analyse des Ventes vs Prévisions</h3>
+                    <p className="text-gray-600 text-xs">Comparaison avec les objectifs</p>
                   </div>
-                  <div className="flex gap-2">
-                    <button className="px-3 py-1.5 bg-[#0056D2] text-white rounded text-sm">Mensuel</button>
-                    <button className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded text-sm hover:bg-gray-50">Trimestriel</button>
-                    <button className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded text-sm hover:bg-gray-50">Annuel</button>
+                  <div className="flex gap-1.5">
+                    <button className="px-2 py-1 bg-[#0056D2] text-white rounded text-xs">Mensuel</button>
+                    <button className="px-2 py-1 border border-gray-300 text-gray-700 rounded text-xs hover:bg-gray-50">Trimestriel</button>
+                    <button className="px-2 py-1 border border-gray-300 text-gray-700 rounded text-xs hover:bg-gray-50">Annuel</button>
                   </div>
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250}>
                   <LineChart data={salesData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis dataKey="month" stroke="#6b7280" />
                     <YAxis stroke="#6b7280" />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="ventes" stroke="#0056D2" strokeWidth={3} name="Ventes réelles" />
-                    <Line type="monotone" dataKey="previsions" stroke="#FF6B00" strokeWidth={2} strokeDasharray="5 5" name="Prévisions" />
-                    <Line type="monotone" dataKey="couts" stroke="#9ca3af" strokeWidth={2} name="Coûts" />
+                    <Line type="monotone" dataKey="ventes" stroke="#0056D2" strokeWidth={2} name="Ventes réelles" />
+                    <Line type="monotone" dataKey="previsions" stroke="#FF6B00" strokeWidth={1.5} strokeDasharray="5 5" name="Prévisions" />
+                    <Line type="monotone" dataKey="couts" stroke="#9ca3af" strokeWidth={1.5} name="Coûts" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
 
               {/* Graphique de revenus */}
-              <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <div className="mb-6">
-                  <h3 className="text-gray-800 mb-1">Évolution des Revenus</h3>
-                  <p className="text-gray-600">Tendance sur 8 mois</p>
+              <div className="bg-white rounded border border-gray-200 p-4">
+                <div className="mb-4">
+                  <h3 className="text-gray-800 text-sm mb-0.5">Évolution des Revenus</h3>
+                  <p className="text-gray-600 text-xs">Tendance sur 8 mois</p>
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250}>
                   <AreaChart data={revenueData}>
                     <defs>
                       <linearGradient id="colorRevenus" x1="0" y1="0" x2="0" y2="1">
@@ -172,21 +172,21 @@ export function AnalyticsView({ currentView, onViewChange, onShowImportModal }: 
                     <XAxis dataKey="month" stroke="#6b7280" />
                     <YAxis stroke="#6b7280" />
                     <Tooltip />
-                    <Area type="monotone" dataKey="revenus" stroke="#0056D2" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenus)" name="Revenus (€)" />
+                    <Area type="monotone" dataKey="revenus" stroke="#0056D2" strokeWidth={2} fillOpacity={1} fill="url(#colorRevenus)" name="Revenus (€)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
             {/* Insights IA */}
-            <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg border border-orange-200 p-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-[#FF6B00] rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Activity size={24} className="text-white" />
+            <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded border border-orange-200 p-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 bg-[#FF6B00] rounded flex items-center justify-center flex-shrink-0">
+                  <Activity size={20} className="text-white" />
                 </div>
                 <div>
-                  <h3 className="text-gray-800 mb-2">Insights IA</h3>
-                  <ul className="space-y-2 text-gray-700">
+                  <h3 className="text-gray-800 text-sm mb-1.5">Insights IA</h3>
+                  <ul className="space-y-1 text-gray-700 text-xs">
                     <li>• Les ventes de juillet dépassent les prévisions de 5.9%, une excellente performance</li>
                     <li>• Tendance à la hausse constante depuis mars (+44% sur 5 mois)</li>
                     <li>• Recommandation : Augmenter les stocks pour le mois prochain</li>

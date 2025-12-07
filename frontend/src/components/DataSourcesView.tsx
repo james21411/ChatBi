@@ -81,98 +81,98 @@ export function DataSourcesView({ currentView, onViewChange, onShowImportModal }
       />
       
       <div className="flex flex-1 overflow-hidden bg-gray-50">
-        <Sidebar activeView="data-sources" />
+        <Sidebar activeView="data-sources" onNavigate={onViewChange} />
         
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* En-tête */}
-          <div className="bg-white border-b border-gray-200 px-8 py-6">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-gray-800">Sources de Données</h1>
-              <div className="flex gap-3">
-                <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
-                  <RefreshCw size={18} />
+          <div className="bg-white border-b border-gray-200 px-4 py-3">
+            <div className="flex items-center justify-between mb-1">
+              <h1 className="text-gray-800 text-lg">Sources de Données</h1>
+              <div className="flex gap-2">
+                <button className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors flex items-center gap-1.5 text-sm">
+                  <RefreshCw size={14} />
                   Actualiser tout
                 </button>
-                <button className="px-4 py-2 bg-[#0056D2] text-white rounded-lg hover:bg-[#0046b2] transition-colors flex items-center gap-2">
-                  <Plus size={18} />
+                <button className="px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors flex items-center gap-1.5 text-sm">
+                  <Plus size={14} />
                   Nouvelle source
                 </button>
               </div>
             </div>
-            <p className="text-gray-600">Gérez vos connexions aux sources de données</p>
+            <p className="text-gray-600 text-sm">Gérez vos connexions aux sources de données</p>
           </div>
 
           {/* Statistiques */}
-          <div className="bg-white border-b border-gray-200 px-8 py-4">
-            <div className="grid grid-cols-4 gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle size={20} className="text-green-600" />
+          <div className="bg-white border-b border-gray-200 px-4 py-2">
+            <div className="grid grid-cols-4 gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
+                  <CheckCircle size={16} className="text-green-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600">Actives</p>
-                  <p className="text-gray-800">4 sources</p>
+                  <p className="text-gray-600 text-sm">Actives</p>
+                  <p className="text-gray-800 text-sm">4 sources</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                  <AlertCircle size={20} className="text-red-600" />
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-red-100 rounded flex items-center justify-center">
+                  <AlertCircle size={16} className="text-red-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600">Erreurs</p>
-                  <p className="text-gray-800">1 source</p>
+                  <p className="text-gray-600 text-sm">Erreurs</p>
+                  <p className="text-gray-800 text-sm">1 source</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Database size={20} className="text-[#FF6B00]" />
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-orange-100 rounded flex items-center justify-center">
+                  <Database size={16} className="text-[#FF6B00]" />
                 </div>
                 <div>
-                  <p className="text-gray-600">Total données</p>
-                  <p className="text-gray-800">13.8M lignes</p>
+                  <p className="text-gray-600 text-sm">Total données</p>
+                  <p className="text-gray-800 text-sm">13.8M lignes</p>
                 </div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <RefreshCw size={20} className="text-[#0056D2]" />
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                  <RefreshCw size={16} className="text-[#0056D2]" />
                 </div>
                 <div>
-                  <p className="text-gray-600">Dernière sync</p>
-                  <p className="text-gray-800">Il y a 5 min</p>
+                  <p className="text-gray-600 text-sm">Dernière sync</p>
+                  <p className="text-gray-800 text-sm">Il y a 5 min</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Liste des sources */}
-          <div className="flex-1 overflow-auto p-8">
-            <div className="grid grid-cols-2 gap-6">
+          <div className="flex-1 overflow-auto p-4">
+            <div className="grid grid-cols-2 gap-4">
               {dataSources.map((source) => {
                 const Icon = source.icon;
                 const isError = source.status === 'Erreur';
                 const isPaused = source.status === 'En pause';
-                
+
                 return (
                   <div
                     key={source.id}
-                    className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow"
+                    className="bg-white border border-gray-200 rounded p-4 hover:shadow transition-shadow"
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 ${source.color} rounded-lg flex items-center justify-center`}>
-                          <Icon size={24} className="text-white" />
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-start gap-3">
+                        <div className={`w-10 h-10 ${source.color} rounded flex items-center justify-center`}>
+                          <Icon size={20} className="text-white" />
                         </div>
-                        
+
                         <div>
-                          <h3 className="text-gray-800 mb-1">{source.name}</h3>
-                          <p className="text-gray-600">{source.type}</p>
+                          <h3 className="text-gray-800 text-sm mb-0.5">{source.name}</h3>
+                          <p className="text-gray-600 text-xs">{source.type}</p>
                         </div>
                       </div>
 
-                      <span className={`px-3 py-1 rounded-full text-white ${
+                      <span className={`px-2 py-0.5 rounded-full text-white text-xs ${
                         isError ? 'bg-red-500' :
                         isPaused ? 'bg-orange-500' :
                         'bg-green-500'
@@ -181,23 +181,23 @@ export function DataSourcesView({ currentView, onViewChange, onShowImportModal }
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 mb-4 text-gray-600">
+                    <div className="grid grid-cols-2 gap-3 mb-3 text-gray-600 text-xs">
                       <div>
-                        <p className="mb-1">Dernière sync</p>
+                        <p className="mb-0.5">Dernière sync</p>
                         <p className="text-gray-800">{source.lastSync}</p>
                       </div>
                       <div>
-                        <p className="mb-1">Volume</p>
+                        <p className="mb-0.5">Volume</p>
                         <p className="text-gray-800">{source.records}</p>
                       </div>
                     </div>
 
-                    <div className="flex gap-2">
-                      <button className="flex-1 px-4 py-2 bg-[#0056D2] text-white rounded-lg hover:bg-[#0046b2] transition-colors flex items-center justify-center gap-2">
-                        <RefreshCw size={16} />
+                    <div className="flex gap-1.5">
+                      <button className="flex-1 px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors flex items-center justify-center gap-1.5 text-xs">
+                        <RefreshCw size={12} />
                         Synchroniser
                       </button>
-                      <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                      <button className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors text-xs">
                         Configurer
                       </button>
                     </div>

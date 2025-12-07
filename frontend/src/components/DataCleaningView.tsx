@@ -1,5 +1,5 @@
 import { DataGrid } from './DataGrid';
-import { CleaningAssistant } from './CleaningAssistant';
+import { UnifiedChatbotPanel } from './UnifiedChatbotPanel';
 import { TopMenuBar } from './TopMenuBar';
 import { Sidebar } from './Sidebar';
 
@@ -19,15 +19,15 @@ export function DataCleaningView({ currentView, onViewChange, onShowImportModal 
         onShowImportModal={onShowImportModal}
       />
       
-      <div className="flex flex-1 overflow-hidden bg-gray-50">
+      <div className="flex flex-1 overflow-hidden">
         {/* Barre latérale gauche */}
-        <Sidebar activeView="data-sources" />
-        
+        <Sidebar activeView="cleaning" onNavigate={onViewChange} />
+
         {/* Zone principale - Data Grid */}
         <DataGrid />
-        
+
         {/* Panneau latéral droit - Assistant IA de nettoyage */}
-        <CleaningAssistant />
+        <UnifiedChatbotPanel type="cleaning" />
       </div>
     </div>
   );

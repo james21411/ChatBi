@@ -24,24 +24,24 @@ export function AIAssistant() {
   const [inputValue, setInputValue] = useState('');
 
   return (
-    <div className="w-96 bg-gray-50 border-l border-gray-200 flex flex-col">
+    <div className="w-80 bg-gray-50 border-l border-gray-200 flex flex-col">
       {/* En-tête */}
-      <div className="bg-white px-6 py-5 border-b border-gray-200 flex items-center gap-3">
-        <div className="w-8 h-8 bg-[#FF6B00] rounded-lg flex items-center justify-center">
-          <Sparkles size={18} className="text-white" />
+      <div className="bg-white px-4 py-3 border-b border-gray-200 flex items-center gap-2">
+        <div className="w-6 h-6 bg-[#FF6B00] rounded flex items-center justify-center">
+          <Sparkles size={14} className="text-white" />
         </div>
-        <h2 className="text-gray-800">Nexus Assistant</h2>
+        <h2 className="text-gray-800 text-sm">Nexus Assistant</h2>
       </div>
 
       {/* Zone de conversation */}
-      <div className="flex-1 overflow-auto p-6 space-y-4">
+      <div className="flex-1 overflow-auto p-4 space-y-3">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] px-4 py-3 rounded-lg ${
+              className={`max-w-[85%] px-3 py-2 rounded text-sm ${
                 message.type === 'user'
                   ? 'bg-[#0056D2] text-white rounded-br-none'
                   : 'bg-white border border-[#FF6B00] text-gray-800 rounded-bl-none'
@@ -54,17 +54,17 @@ export function AIAssistant() {
       </div>
 
       {/* Zone de saisie */}
-      <div className="bg-white px-6 py-4 border-t border-gray-200">
-        <div className="flex gap-2">
+      <div className="bg-white px-4 py-3 border-t border-gray-200">
+        <div className="flex gap-1.5">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Posez une question..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent"
+            className="flex-1 px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent text-sm"
           />
-          <button className="w-10 h-10 bg-[#FF6B00] text-white rounded-lg flex items-center justify-center hover:bg-[#e56100] transition-colors">
-            <Send size={18} />
+          <button className="w-8 h-8 bg-[#FF6B00] text-white rounded flex items-center justify-center hover:bg-[#e56100] transition-colors">
+            <Send size={14} />
           </button>
         </div>
       </div>

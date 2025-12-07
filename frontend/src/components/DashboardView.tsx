@@ -1,7 +1,8 @@
 import { Sidebar } from './Sidebar';
 import { Dashboard } from './Dashboard';
-import { AIAssistant } from './AIAssistant';
+import { UnifiedChatbotPanel } from './UnifiedChatbotPanel';
 import { TopMenuBar } from './TopMenuBar';
+import { useState } from 'react';
 
 interface DashboardViewProps {
   currentView?: string;
@@ -10,6 +11,7 @@ interface DashboardViewProps {
 }
 
 export function DashboardView({ currentView, onViewChange, onShowImportModal }: DashboardViewProps) {
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
   return (
     <div className="flex flex-col h-screen">
       {/* Menu supérieur type VSCode */}
@@ -21,13 +23,13 @@ export function DashboardView({ currentView, onViewChange, onShowImportModal }: 
       
       <div className="flex flex-1 overflow-hidden">
         {/* Barre latérale gauche */}
-        <Sidebar activeView="dashboard" />
-        
+        <Sidebar activeView="dashboard" onNavigate={onViewChange} onToggleAI={() => setShowAIAssistant(!showAIAssistant)} />
+
         {/* Zone centrale - Dashboard */}
         <Dashboard />
-        
+
         {/* Panneau latéral droit - Assistant IA */}
-        <AIAssistant />
+        {showAIAssistant && <UnifiedChatbotPanel type="ai" />}
       </div>
     </div>
   );
