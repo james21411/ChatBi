@@ -1,4 +1,4 @@
-import { X, FileText, Upload, Database, Table, FileSpreadsheet, FileJson, File } from 'lucide-react';
+ import { X, FileText, Upload, Database, Table, FileSpreadsheet, FileJson, File } from 'lucide-react';
 import { useState } from 'react';
 import { createDataSource } from '../api/service';
 import { API_BASE_URL } from '../api/config';

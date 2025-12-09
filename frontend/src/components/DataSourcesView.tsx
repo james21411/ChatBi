@@ -270,22 +270,22 @@ export function DataSourcesView({ currentView, onViewChange, onShowImportModal }
 
   return (
     <div className="flex flex-col h-screen">
-      <TopMenuBar 
-        currentView={currentView} 
+      <TopMenuBar
+        currentView={currentView}
         onViewChange={onViewChange}
         onShowImportModal={onShowImportModal}
       />
-      
+
       <div className="flex flex-1 overflow-hidden bg-gray-50">
         <Sidebar activeView="data-sources" onNavigate={onViewChange} />
-        
+
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* En-tête */}
           <div className="bg-white border-b border-gray-200 px-4 py-3">
             <div className="flex items-center justify-between mb-1">
               <h1 className="text-gray-800 text-lg">Sources de Données</h1>
               <div className="flex gap-2">
-                <button 
+                <button
                   onClick={handleRefreshAll}
                   disabled={loading}
                   className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors flex items-center gap-1.5 text-sm disabled:opacity-50"
@@ -293,7 +293,7 @@ export function DataSourcesView({ currentView, onViewChange, onShowImportModal }
                   <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
                   Actualiser tout
                 </button>
-                <button 
+                <button
                   onClick={handleShowImportModal}
                   className="px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors flex items-center gap-1.5 text-sm"
                 >
@@ -305,163 +305,206 @@ export function DataSourcesView({ currentView, onViewChange, onShowImportModal }
             <p className="text-gray-600 text-sm">Gérez vos connexions aux sources de données</p>
           </div>
 
-          {/* Statistiques */}
-          <div className="bg-white border-b border-gray-200 px-4 py-2">
-            <div className="grid grid-cols-4 gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
-                  <CheckCircle size={16} className="text-green-600" />
-                </div>
-                <div>
-                  <p className="text-gray-600 text-sm">Actives</p>
-                  <p className="text-gray-800 text-sm">{activeSources.length} sources</p>
+          {/* Contenu principal avec split view */}
+          <div className="flex-1 flex overflow-hidden">
+            {/* Panneau gauche - Liste des sources */}
+            <div className={`${showDataPreview ? 'w-1/3' : 'flex-1'} flex flex-col border-r border-gray-200 bg-white transition-all duration-300`}>
+              {/* Statistiques */}
+              <div className="bg-white border-b border-gray-200 px-4 py-2 flex-shrink-0">
+                <div className="grid grid-cols-4 gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
+                      <CheckCircle size={16} className="text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm">Actives</p>
+                      <p className="text-gray-800 text-sm">{activeSources.length} sources</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-red-100 rounded flex items-center justify-center">
+                      <AlertCircle size={16} className="text-red-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm">Erreurs</p>
+                      <p className="text-gray-800 text-sm">{errorSources.length} source</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-orange-100 rounded flex items-center justify-center">
+                      <Database size={16} className="text-[#FF6B00]" />
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm">Total données</p>
+                      <p className="text-gray-800 text-sm">{totalVolume}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                      <RefreshCw size={16} className="text-[#0056D2]" />
+                    </div>
+                    <div>
+                      <p className="text-gray-600 text-sm">Dernière sync</p>
+                      <p className="text-gray-800 text-sm">{timeAgo}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-red-100 rounded flex items-center justify-center">
-                  <AlertCircle size={16} className="text-red-600" />
-                </div>
-                <div>
-                  <p className="text-gray-600 text-sm">Erreurs</p>
-                  <p className="text-gray-800 text-sm">{errorSources.length} source</p>
-                </div>
-              </div>
+              {/* Liste des sources */}
+              <div className="flex-1 overflow-auto p-4">
+                {error && (
+                  <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle size={16} className="text-red-600" />
+                      <p className="text-red-800 text-sm">{error}</p>
+                    </div>
+                  </div>
+                )}
 
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-orange-100 rounded flex items-center justify-center">
-                  <Database size={16} className="text-[#FF6B00]" />
-                </div>
-                <div>
-                  <p className="text-gray-600 text-sm">Total données</p>
-                  <p className="text-gray-800 text-sm">{totalVolume}</p>
-                </div>
-              </div>
+                {loading ? (
+                  <div className="flex items-center justify-center h-32">
+                    <RefreshCw size={24} className="animate-spin text-[#0056D2]" />
+                    <span className="ml-2 text-gray-600">Chargement des sources de données...</span>
+                  </div>
+                ) : dataSources.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-32 text-gray-500">
+                    <Database size={48} className="mb-2" />
+                    <p>Aucune source de données trouvée</p>
+                    <p className="text-sm">Créez votre première source de données pour commencer</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-3">
+                    {dataSources.map((source) => {
+                      const Icon = getIconForType(source.type);
+                      const status = getStatusFromDataSource(source);
+                      const isError = status === 'Erreur';
+                      const isPaused = status === 'En pause';
+                      const isSyncing = syncingDataSources.has(source.id);
+                      const isSelected = previewData?.dataSource?.id === source.id;
 
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
-                  <RefreshCw size={16} className="text-[#0056D2]" />
-                </div>
-                <div>
-                  <p className="text-gray-600 text-sm">Dernière sync</p>
-                  <p className="text-gray-800 text-sm">{timeAgo}</p>
-                </div>
+                      return (
+                        <div
+                          key={source.id}
+                          className={`bg-white border rounded p-4 hover:shadow transition-all cursor-pointer ${
+                            isSelected ? 'border-[#0056D2] bg-blue-50' : 'border-gray-200'
+                          }`}
+                          onClick={() => handleViewData(source)}
+                        >
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-start gap-3">
+                              <div className={`w-10 h-10 ${getColorForType(source.type)} rounded flex items-center justify-center`}>
+                                <Icon size={20} className="text-white" />
+                              </div>
+
+                              <div>
+                                <h3 className="text-gray-800 text-sm mb-0.5">{source.name}</h3>
+                                <p className="text-gray-600 text-xs">{source.type}</p>
+                                {source.schema_info && (() => {
+                                  try {
+                                    const schema = JSON.parse(source.schema_info);
+                                    if (schema.processing_info) {
+                                      const { detected_encoding, detected_delimiter } = schema.processing_info;
+                                      return (
+                                        <p className="text-gray-500 text-xs">
+                                          {detected_encoding && `Encodage: ${detected_encoding}`}
+                                          {detected_encoding && detected_delimiter && ' • '}
+                                          {detected_delimiter && `Séparateur: '${detected_delimiter}'`}
+                                        </p>
+                                      );
+                                    }
+                                  } catch (e) {}
+                                  return null;
+                                })()}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-1">
+                              <span className={`px-2 py-0.5 rounded-full text-white text-xs ${
+                                isError ? 'bg-red-500' :
+                                isPaused ? 'bg-orange-500' :
+                                'bg-green-500'
+                              }`}>
+                                {status}
+                              </span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteDataSource(source);
+                                }}
+                                disabled={deletingDataSources.has(source.id)}
+                                className="p-1 text-red-500 hover:bg-red-50 rounded disabled:opacity-50"
+                                title="Supprimer la source"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3 mb-3 text-gray-600 text-xs">
+                            <div>
+                              <p className="mb-0.5">Dernière sync</p>
+                              <p className="text-gray-800">{source.updated_at ? getLastSyncFromDate(source.updated_at) : 'N/A'}</p>
+                            </div>
+                            <div>
+                              <p className="mb-0.5">Volume</p>
+                              <p className="text-gray-800">{getVolumeFromDataSource(source)}</p>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-1.5">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSyncDataSource(source.id);
+                              }}
+                              disabled={isSyncing}
+                              className="flex-1 px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors flex items-center justify-center gap-1.5 text-xs disabled:opacity-50"
+                            >
+                              <RefreshCw size={12} className={isSyncing ? 'animate-spin' : ''} />
+                              {isSyncing ? 'Synchronisation...' : 'Synchroniser'}
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (isSelected) {
+                                  handleCloseDataPreview();
+                                } else {
+                                  handleViewData(source);
+                                }
+                              }}
+                              className={`px-3 py-1.5 border rounded transition-colors text-xs flex items-center gap-1 ${
+                                isSelected
+                                  ? 'border-gray-300 text-gray-700 bg-gray-50'
+                                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                              }`}
+                            >
+                              <Eye size={12} />
+                              {isSelected ? 'Masquer' : 'Voir'}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* Liste des sources */}
-          <div className="flex-1 overflow-auto p-4">
-            {error && (
-              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
-                <div className="flex items-center gap-2">
-                  <AlertCircle size={16} className="text-red-600" />
-                  <p className="text-red-800 text-sm">{error}</p>
-                </div>
-              </div>
-            )}
-
-            {loading ? (
-              <div className="flex items-center justify-center h-32">
-                <RefreshCw size={24} className="animate-spin text-[#0056D2]" />
-                <span className="ml-2 text-gray-600">Chargement des sources de données...</span>
-              </div>
-            ) : dataSources.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-32 text-gray-500">
-                <Database size={48} className="mb-2" />
-                <p>Aucune source de données trouvée</p>
-                <p className="text-sm">Créez votre première source de données pour commencer</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-4">
-                {dataSources.map((source) => {
-                  const Icon = getIconForType(source.type);
-                  const status = getStatusFromDataSource(source);
-                  const isError = status === 'Erreur';
-                  const isPaused = status === 'En pause';
-                  const isSyncing = syncingDataSources.has(source.id);
-
-                  return (
-                    <div
-                      key={source.id}
-                      className="bg-white border border-gray-200 rounded p-4 hover:shadow transition-shadow"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-start gap-3">
-                          <div className={`w-10 h-10 ${getColorForType(source.type)} rounded flex items-center justify-center`}>
-                            <Icon size={20} className="text-white" />
-                          </div>
-
-                          <div>
-                            <h3 className="text-gray-800 text-sm mb-0.5">{source.name}</h3>
-                            <p className="text-gray-600 text-xs">{source.type}</p>
-                            {source.schema_info && (() => {
-                              try {
-                                const schema = JSON.parse(source.schema_info);
-                                if (schema.processing_info) {
-                                  const { detected_encoding, detected_delimiter } = schema.processing_info;
-                                  return (
-                                    <p className="text-gray-500 text-xs">
-                                      {detected_encoding && `Encodage: ${detected_encoding}`}
-                                      {detected_encoding && detected_delimiter && ' • '}
-                                      {detected_delimiter && `Séparateur: '${detected_delimiter}'`}
-                                    </p>
-                                  );
-                                }
-                              } catch (e) {}
-                              return null;
-                            })()}
-                          </div>
-                        </div>
-
-                        <span className={`px-2 py-0.5 rounded-full text-white text-xs ${
-                          isError ? 'bg-red-500' :
-                          isPaused ? 'bg-orange-500' :
-                          'bg-green-500'
-                        }`}>
-                          {status}
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3 mb-3 text-gray-600 text-xs">
-                        <div>
-                          <p className="mb-0.5">Dernière sync</p>
-                          <p className="text-gray-800">{source.updated_at ? getLastSyncFromDate(source.updated_at) : 'N/A'}</p>
-                        </div>
-                        <div>
-                          <p className="mb-0.5">Volume</p>
-                          <p className="text-gray-800">{getVolumeFromDataSource(source)}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-1.5">
-                        <button
-                          onClick={() => handleSyncDataSource(source.id)}
-                          disabled={isSyncing}
-                          className="flex-1 px-3 py-1.5 bg-[#0056D2] text-white rounded hover:bg-[#0046b2] transition-colors flex items-center justify-center gap-1.5 text-xs disabled:opacity-50"
-                        >
-                          <RefreshCw size={12} className={isSyncing ? 'animate-spin' : ''} />
-                          {isSyncing ? 'Synchronisation...' : 'Synchroniser'}
-                        </button>
-                        <button
-                          onClick={() => handleViewData(source)}
-                          className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors text-xs flex items-center gap-1"
-                          title="Visualiser les données"
-                        >
-                          <Eye size={12} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteDataSource(source)}
-                          disabled={deletingDataSources.has(source.id)}
-                          className="px-3 py-1.5 border border-red-300 text-red-700 rounded hover:bg-red-50 transition-colors text-xs flex items-center gap-1 disabled:opacity-50"
-                          title="Supprimer la source"
-                        >
-                          <Trash2 size={12} />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
+            {/* Panneau droit - Visualiseur de données */}
+            {showDataPreview && previewData && (
+              <div className="flex-1 flex flex-col bg-white border-l border-gray-200">
+                <DataPreviewPanel
+                  data={previewData.rows}
+                  totalRows={previewData.totalRows}
+                  schema={previewData.schema}
+                  dataSource={previewData.dataSource}
+                  fileName={previewSourceName}
+                  onClose={handleCloseDataPreview}
+                />
               </div>
             )}
           </div>
@@ -470,22 +513,9 @@ export function DataSourcesView({ currentView, onViewChange, onShowImportModal }
 
       {/* Modale d'import */}
       {showImportModal && (
-        <SqlImportModal 
+        <SqlImportModal
           onClose={handleCloseImportModal}
           onDataSourceCreated={loadDataSources}
-        />
-      )}
-
-      {/* Modale de prévisualisation des données */}
-      {showDataPreview && previewData && (
-        <DataPreviewModal
-          data={previewData.rows}
-          totalRows={previewData.totalRows}
-          schema={previewData.schema}
-          dataSource={previewData.dataSource}
-          fileName={previewSourceName}
-          onClose={handleCloseDataPreview}
-          onConfirm={handleCloseDataPreview}
         />
       )}
 
@@ -559,20 +589,20 @@ interface DataPreviewModalProps {
   onConfirm: () => void;
 }
 
-function DataPreviewModal({ data, totalRows, schema, dataSource, fileName, onClose, onConfirm }: DataPreviewModalProps) {
+function DataPreviewPanel({ data, totalRows, schema, dataSource, fileName, onClose }: Omit<DataPreviewModalProps, 'onConfirm'>) {
   const [showOptions, setShowOptions] = useState(false);
   const [displayMode, setDisplayMode] = useState<'first' | 'last' | 'range'>('first');
-  const [rowCount, setRowCount] = useState(50);
+  const [rowCount, setRowCount] = useState(10);
   const [startRow, setStartRow] = useState(0);
   const [endRow, setEndRow] = useState(49);
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Initialize visible columns
+  // Initialize visible columns (limit to 10 by default)
   useEffect(() => {
     if (data && data.length > 0) {
       const allColumns = Object.keys(data[0]);
-      setVisibleColumns(allColumns);
+      setVisibleColumns(allColumns.slice(0, 10)); // Show only first 10 columns by default
     }
   }, [data]);
 
@@ -613,94 +643,103 @@ function DataPreviewModal({ data, totalRows, schema, dataSource, fileName, onClo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      <div className="relative bg-white rounded-xl shadow-2xl w-[90vw] max-w-[1000px] max-h-[80vh] flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
-          <div className="flex items-center gap-4">
-            <h3 className="text-lg font-medium text-gray-800">
-              Données: {fileName}
-            </h3>
-            <div className="text-sm text-gray-500">
-              {totalRows ? `${totalRows} lignes totales` : `${data.length} lignes chargées`}
-              {schema?.column_count && ` • ${schema.column_count} colonnes`}
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowOptions(!showOptions)}
-              className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors text-sm flex items-center gap-1"
-            >
-              ⚙️ Options
-            </button>
-            <button
-              onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <X size={20} />
-            </button>
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0 bg-white">
+        <div className="flex items-center gap-4">
+          <h3 className="text-lg font-medium text-gray-800">
+            Données: {fileName}
+          </h3>
+          <div className="text-sm text-gray-500">
+            {totalRows ? `${totalRows} lignes totales` : `${data.length} lignes chargées`}
+            {schema?.column_count && ` • ${schema.column_count} colonnes`}
           </div>
         </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowOptions(!showOptions)}
+            className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors text-sm flex items-center gap-1"
+          >
+            ⚙️ Options
+          </button>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+      </div>
 
-        {/* Options Panel */}
-        {showOptions && (
-          <div className="border-b border-gray-200 bg-gray-50 p-4 flex-shrink-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Row Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Lignes à afficher
-                </label>
-                <div className="space-y-2">
-                  <select
-                    value={displayMode}
-                    onChange={(e) => setDisplayMode(e.target.value as any)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                  >
-                    <option value="first">Premières lignes</option>
-                    <option value="last">Dernières lignes</option>
-                    <option value="range">Plage personnalisée</option>
-                  </select>
+      {/* Options Panel */}
+      {showOptions && (
+        <div className="border-b border-gray-200 bg-gray-50 p-4 flex-shrink-0">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Row Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Lignes à afficher
+              </label>
+              <div className="space-y-2">
+                <select
+                  value={displayMode}
+                  onChange={(e) => setDisplayMode(e.target.value as any)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                >
+                  <option value="first">Premières lignes</option>
+                  <option value="last">Dernières lignes</option>
+                  <option value="range">Plage personnalisée</option>
+                </select>
 
-                  {displayMode === 'range' ? (
-                    <div className="flex gap-2">
-                      <input
-                        type="number"
-                        placeholder="Début"
-                        value={startRow}
-                        onChange={(e) => setStartRow(Math.max(0, parseInt(e.target.value) || 0))}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Fin"
-                        value={endRow}
-                        onChange={(e) => setEndRow(Math.max(startRow, parseInt(e.target.value) || 0))}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                      />
-                    </div>
-                  ) : (
+                {displayMode === 'range' ? (
+                  <div className="flex gap-2">
                     <input
                       type="number"
-                      placeholder="Nombre de lignes"
-                      value={rowCount}
-                      onChange={(e) => setRowCount(Math.max(1, parseInt(e.target.value) || 10))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                      placeholder="Début"
+                      value={startRow}
+                      onChange={(e) => setStartRow(Math.max(0, parseInt(e.target.value) || 0))}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
                     />
-                  )}
-                </div>
+                    <input
+                      type="number"
+                      placeholder="Fin"
+                      value={endRow}
+                      onChange={(e) => setEndRow(Math.max(startRow, parseInt(e.target.value) || 0))}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                    />
+                  </div>
+                ) : (
+                  <input
+                    type="number"
+                    placeholder="Nombre de lignes"
+                    value={rowCount}
+                    onChange={(e) => setRowCount(Math.max(1, parseInt(e.target.value) || 10))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  />
+                )}
               </div>
+            </div>
 
-              {/* Column Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Colonnes ({visibleColumns.length}/{allColumns.length} visibles)
-                </label>
+            {/* Column Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Colonnes ({visibleColumns.length}/{allColumns.length} visibles)
+              </label>
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setVisibleColumns(allColumns.slice(0, 10))}
+                    className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded"
+                  >
+                    10 premières
+                  </button>
+                  <button
+                    onClick={() => setVisibleColumns(allColumns)}
+                    className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded"
+                  >
+                    Toutes ({allColumns.length})
+                  </button>
+                </div>
                 <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-2">
                   {allColumns.map(column => (
                     <label key={column} className="flex items-center gap-2 text-sm">
@@ -715,88 +754,81 @@ function DataPreviewModal({ data, totalRows, schema, dataSource, fileName, onClo
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* Search */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rechercher
-                </label>
-                <input
-                  type="text"
-                  placeholder="Rechercher dans les données..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                />
+            {/* Search */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Rechercher
+              </label>
+              <input
+                type="text"
+                placeholder="Rechercher dans les données..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Data Table */}
+      <div className="flex-1 overflow-hidden flex flex-col">
+        <div className="px-4 py-2 bg-gray-50 border-b border-gray-200 text-sm text-gray-600">
+          Affichage de {displayData.length} lignes • {filteredColumns.length} colonnes
+          {searchTerm && ` • Recherche: "${searchTerm}"`}
+          <div className="text-xs text-gray-500 mt-1">Table simplifiée temporairement</div>
+        </div>
+
+        <div className="flex-1 overflow-hidden">
+          <div className="h-full flex flex-col">
+            {/* Scroll horizontal et vertical pour le tableau */}
+            <div className="flex-1 overflow-auto">
+              <div className="inline-block min-w-full">
+                <table className="w-full border border-gray-300">
+                  <thead className="bg-gray-50 sticky top-0 z-10">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-300 bg-gray-50 sticky left-0 z-20">
+                        #
+                      </th>
+                      {filteredColumns.map((column) => (
+                        <th
+                          key={column}
+                          className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-300 bg-gray-50 whitespace-nowrap"
+                        >
+                          {column}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {displayData.map((row, index) => (
+                      <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                        <td className="px-4 py-3 text-sm text-gray-500 border-b border-gray-200 font-mono sticky left-0 bg-inherit z-10">
+                          {(displayMode === 'first' ? index :
+                            displayMode === 'last' ? (data.length - rowCount + index) :
+                            startRow + index) + 1}
+                        </td>
+                        {filteredColumns.map((column) => (
+                          <td
+                            key={column}
+                            className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200 max-w-xs truncate whitespace-nowrap"
+                            title={String(row[column])}
+                          >
+                            {String(row[column])}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
-        )}
-
-        {/* Data Table */}
-        <div className="flex-1 overflow-hidden flex flex-col">
-          <div className="px-6 py-2 bg-gray-50 border-b border-gray-200 text-sm text-gray-600">
-            Affichage de {displayData.length} lignes • {filteredColumns.length} colonnes
-            {searchTerm && ` • Recherche: "${searchTerm}"`}
-          </div>
-
-          <div className="flex-1 overflow-auto">
-            <div className="inline-block min-w-full">
-              <table className="min-w-full border border-gray-300">
-                <thead className="bg-gray-50 sticky top-0">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-300 bg-gray-50">
-                      #
-                    </th>
-                    {filteredColumns.map((column) => (
-                      <th
-                        key={column}
-                        className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-300 bg-gray-50"
-                      >
-                        {column}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {displayData.map((row, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="px-4 py-3 text-sm text-gray-500 border-b border-gray-200 font-mono">
-                        {(displayMode === 'first' ? index :
-                          displayMode === 'last' ? (data.length - rowCount + index) :
-                          startRow + index) + 1}
-                      </td>
-                      {filteredColumns.map((column) => (
-                        <td
-                          key={column}
-                          className="px-4 py-3 text-sm text-gray-900 border-b border-gray-200 max-w-xs truncate"
-                          title={String(row[column])}
-                        >
-                          {String(row[column])}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="flex justify-between items-center px-6 py-4 bg-gray-50 border-t border-gray-200 flex-shrink-0">
-          <div className="text-sm text-gray-600">
-            {dataSource?.type && `Type: ${dataSource.type}`}
-            {schema?.processing_info?.detected_encoding && ` • Encodage: ${schema.processing_info.detected_encoding}`}
-          </div>
-          <button
-            onClick={onConfirm}
-            className="px-4 py-2 bg-[#0056D2] text-white rounded-lg hover:bg-[#0046b2] transition-colors"
-          >
-            Fermer
-          </button>
         </div>
       </div>
+
     </div>
   );
 }
